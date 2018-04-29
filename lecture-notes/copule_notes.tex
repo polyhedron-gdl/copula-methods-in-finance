@@ -600,23 +600,17 @@ where $(X, Y)^T$, $(\tilde X, \tilde Y)^T$ and $(X^\prime, Y^\prime)^T$ are \tex
 
 For copulas without a simple closed form an alternative formula for $\lambda_U$ is more useful.
 
-Consider a pair of $U(0,1)$ random variables $(U,V)$ with copula $C$. 
-
-First note that 
+Consider a pair of $U(0,1)$ random variables $(U,V)$ with copula $C$. First note that 
 
 \begin{equation}
 \mathbb{P} (V \le v \, | \, U = u) = \frac{\partial C(u,v)}{\partial u}
 \end{equation}
-
 and
 
 \begin{equation}
 \mathbb{P} (V > v \, | \, U = u) = 1- \frac{\partial C(u,v)}{\partial u}
 \end{equation}
-
-and similarly when conditioning on V
-
-by definition
+and similarly when conditioning on V. Remember that, by definition
 $$
 \frac{d\bar C(u,u)}{du} = \lim\limits_{\Delta u\rightarrow 0} \frac{\bar C(u+\Delta u,u+\Delta u) - \bar C(u,u) }{\Delta u}
 $$
@@ -638,7 +632,6 @@ since $\bar C(1,1)=0$
                        \Bigr)
 \end{split}
 \end{equation}
-
 Furthermore if $C$ is an exchangeable copula, i.e. $C(u,v) = C(v,u)$, then the expression for $\lambda_U$ simplifies to
 
 \begin{equation}
@@ -652,17 +645,40 @@ Furthermore if $C$ is an exchangeable copula, i.e. $C(u,v) = C(v,u)$, then the e
 =  \lim\limits_{x\rightarrow \infty} \mathbb{P}\bigl(\Phi^{-1}(V)>x\, |\,\Phi^{-1} (U) = x \bigr)
 = \lim\limits_{x\rightarrow \infty} \mathbb{P}\bigl(X>x\, |\,Y = x \bigr)
 \end{equation}
-
 Using the well known fact that $(Y \,\vert \, X = x) \sim \mathcal{N}(\rho x, 1-\rho^2)$ we obtain
 
 \begin{equation}
 \lambda_U = 2 \lim\limits_{x\rightarrow \infty}\bar \Phi \Bigl( (x -\rho x)/\sqrt{1-\rho^2} \Bigr) =
 2 \lim\limits_{x\rightarrow \infty}\bar \Phi \Bigl( x \sqrt{1-\rho}/\sqrt{1+\rho} \Bigr)
 \end{equation}
-
 from which it follows that $\lambda_U = 0$ for $\rho < 1$, hence the gaussian copula does not have upper tail dependence.
 
 
+If $(X_1,X_2)^T$ has a standard bivariate t-distribution with $\nu$ degrees of freedom and linear correlation 
+matrix $R$, then $(X_2 | X_1 = x)$ is t-distributed with $\nu + 1$ degrees of freedom and
+
+$$
+\mathbb{E} (X_2 | X_1 =x) = R_{12}x, \quad Var(X_2 | X_1 =x) = \Biggl( \frac{\nu+x^2}{\nu+1} \Biggr)\Bigl( 1 - R_{12}^2 \Bigr)
+$$
+This can be used to show that the t-copula has upper (and because of radial symmetry equal lower) tail dependence:
+
+\begin{equation}
+	\begin{split}
+		\lambda_U &= 2 \lim\limits_{x\rightarrow\infty} \mathbb{P} \bigl( X_2 > x | X_1 = x \bigr) \\
+		                 &= 2 \lim\limits_{x\rightarrow\infty} \bar t_{\nu+1} \Biggl(
+		                 																						  \Bigl( \frac{\nu+1}{\nu+x^2} \Bigr)^{1/2} \frac{x-R_{12}
+		                 																						  x}{\sqrt{1-R_{12}^2}}
+		                                                                                                \Biggr) \\
+		                 &= 2 \lim\limits_{x\rightarrow\infty} \bar t_{\nu+1} \Biggl(
+		                 																						  \Bigl( \frac{\nu+1}{\nu/x^2+1} \Bigr)^{1/2} \frac{\sqrt{1-
+		                 																						  R_{12}}}{\sqrt{1+R_{12}}}
+		                                                                                                \Biggr) \\
+		                 &= 2 \bar t_{\nu+1} \Biggl(
+		                 										\sqrt{\nu+1} \frac{\sqrt{1-R_{12}}}{\sqrt{1+R_{12}}}
+		                                                     \Biggr) \\
+	\end{split}
+\end{equation}
+From this it is also seen that the coefficient of upper tail dependence is increasing in $R_{12}$ and decreasing in $\nu$. Furthermore, the coefficient of upper (lower) tail dependence tends to zero as the number of degrees of freedom tends to infinity for $R_{12} < 1$.
 %
 %---------------------------------------------------------------------------------------------------------
 %
