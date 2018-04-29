@@ -8,6 +8,9 @@
 \usepackage{graphicx}
 \usepackage{pgfpages}
 \usepackage{framed}
+\usepackage{multicol}
+\usepackage{etoolbox}
+\usepackage{lipsum}
 
 \theoremstyle{plain} 
 \newtheorem{thm}{Theorem}[section] 
@@ -32,28 +35,152 @@
 
 \author{Giovanni Della Lunga}
 \title{Modelling Dependence with Copulas}
-\subtitle{Application to Risk Management} % (optional)
+\subtitle{An Introduction} % (optional)
 \setbeamercovered{transparent} 
 %\setbeamertemplate{navigation symbols}{} 
 %\logo{} 
-%\institute{} 
-%\date{} 
-%\subject{} 
+\institute{WORKSHOP IN QUANTITATIVE FINANCE} 
+\date{Bologna - May 3-4, 2018} %\subject{} 
 \begin{document}
 
 \begin{frame}
 \titlepage
 \end{frame}
 
-\begin{frame}
-\tableofcontents
-\end{frame}
+\makeatletter
+\patchcmd{\beamer@sectionintoc}
+  {\vfill}
+  {\vskip2.5\itemsep}
+  {}
+  {}
+\makeatother 
 
+\begin{frame}
+\frametitle{Outline}
+  \begin{multicols}{2}
+  \tableofcontents
+  \end{multicols}
+\end{frame}
 
 %===================================================================================================
 \section{Introduction}
-%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-%\subsection[Definitions]{Definitions}
+
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Introduction}
+   %\footnotesize{
+   \begin{itemize}
+      	\item  Many real-life situations can be modelled by a large number of random variables which play a significant role, and such 
+      	variates are generally not independent. 
+		\item Therefore, it is often of fundamental importance to be able to link the marginal distributions of different variables in order 
+		to give a flexible and accurate descrip- tion of the joint law of the variables of interest. 	
+		\item Copulas were introduced in 1959 in the context of probabilistic metric spaces and later exploited as a tool for 
+		understanding relationships among multivariate outcomes. 
+		\item A copula is a function that links univariate marginals to their joint multivariate distribution in such a way that it captures 
+		the entire dependence structure in the multivariate distribution. 
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Introduction}
+   %\footnotesize{
+   \begin{itemize}
+		\item The main advantage provided by a copula-approach in dependence modelling is that the selection of an appropriate model 
+		for the dependence between variables X and Y , represented by the copula, can proceed independently from the choice of the 
+		marginal distributions. 
+		\item The seminal result in the history of copulas is due to Sklar that introduced in 1959 the notion, and the name, of copula, 
+		and proved the theo- rem that now bears his name (Sklar, 1959). 
+		\item The latter states that any multivariate distribution can be expressed as its copula function evaluated at its marginal 
+		distribution functions. 
+		\item Moreover, any copula function when evaluated at any marginal distributions is a multivariate distribution.
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Introduction}
+		\begin{itemize}
+		\item This presentation is so organized: 
+		in section 2 we recall some basic concepts from multivariate distributions theory, after Section 3 in which we define 
+		the concept of copula in full generality, we turn in Section 4 to an overview of the most important notions of 
+		dependence used in IRM. Section 5 introduces the most important families of copulas, their properties both 
+		methodological as well as with respect to simulation. Finally in Section 6 we discuss the concept of tail dependence.
+		\item
+		I would like to stress that this presentation only gives a first introduction, topics not included are statistical 
+		estimation of copulas and the modelling of dependence, through copulas, in a dynamic environment.
+		\end{itemize}
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{The Problem (Embrechts, 2009)}
+   %\footnotesize{
+	\noindent\begin{minipage}{0.5\textwidth}% adapt widths of minipages to your needs
+	\includegraphics[width=\linewidth]{fig/omino_interrogativo.png}
+	\end{minipage}%
+	\hfill%
+	\begin{minipage}{0.5\textwidth}
+	   \begin{itemize}
+	      \item A problem well known by all those who deal with Risk Management is the following: "Here we are given a multi-
+	      dimensional (i.e. 
+	      several risk factors) problem for which we have marginal information together with an idea of dependence". 
+		  \item Now the question is: \textbf{When is this problem well-posed?}
+	   \end{itemize}
+	 %  }
+	\end{minipage}
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{The Problem (Embrechts, 2009)}
+   %\footnotesize{
+   \begin{itemize}
+      \item  One concrete question could be this: given two marginal, one-period risk factors $X_1$ ed $X_2$ with lognormal distribution 
+      functions (dfs) 
+       $F_1 = LN(\mu=0, \sigma=1)$ and  $F_1 = LN(\mu=0, \sigma=4)$. How can we simulate from such a model if $X_1$ and $X_2$ 
+       have linear correlation $\rho = 0.5$ say?
+	  \item First of all, the correlation information say something (but what?) about the bivariate df of the random vectors $(X_1, X_2)^T$, 
+	  i.e. about
+	    $F(x_1, x_2) = Prob[x_1 \le X_1, x_2 \le X_2]$;
+	  \item Note however that, in the above, that information is \textbf{not} given; we \textbf{only} know $F_1$, $F_2$ e $\rho$; 
+	  \item What else would one need?
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{The easy Copula argument}
+   %\footnotesize{
+   \begin{itemize}
+	    \item First note that for random variables (rvs) $X_i$ with continuous dfs $F_i$, le variabili $U_i= F_i(X_i) $ are uniformly distributed 
+	    rvs on $[0, 1]$;
+		\item Hence for some joint df $F$ with marginal dfs $F_1$ e $F_2$ we have:
+		\begin{equation}
+			\begin{split}
+			F(X_1, X_2) &= P(X_1 \le x_1, X_2 \le x_2) \\
+			&= P(F_1(X_1) \le F_1(x_1), F_1(X_2) \le F_1(x_2)) \\
+			&= P(U_1 \le F_1(x_1), U_2 \le F_2(x_2)) \\
+			& := C(F_1(x_1), F_2(x_2)) 
+			\end{split}
+		\end{equation}	  
+		\item The function $C$ above is exactly \textit{a} (careful here!) \textbf{copula}, a df on $I^2 = [0, 1] \times [0, 1]$ with standard 
+		uniform marginals, $C$ is the df of the random vector $(U_1, U_2)^T$.  
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{The easy Copula argument}
+   %\footnotesize{
+   \begin{itemize}
+      \item  If we return to our lognormal example, we see no immediate reason how the number $\rho$ should determine the function $C$, 
+      it is not even clear whether the problem has none, one or infinitely many solutions;
+      \item In this case, it turns out that the problem posed has \textbf{no} solution.  				  						  
+      \item The time has come to move on to some definition ... 
+   \end{itemize}
+ %  }
+\end{frame}
+%===================================================================================================
+\section{Joint Distributions}
 %___________________________________________________________________________________________________
 %
 \begin{frame}{Distribution Function}
@@ -75,7 +202,7 @@
 \begin{frame}{Distribution Function}
 
 \noindent\begin{minipage}{0.5\textwidth}% adapt widths of minipages to your needs
-\includegraphics[width=\linewidth]{fig/uniforme.png}
+\includegraphics[width=\linewidth]{fig/cumulata_uniforme.png}
 \end{minipage}%
 \hfill%
 \begin{minipage}{0.5\textwidth}
@@ -136,75 +263,9 @@
 		\bar F_{XY}(x, y ) = 1 - F_X(x) - F_Y(y) + F_{XY}(x, y)
 		\end{equation}
 \end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{The Problem (Embrechts, 2009)}
-   %\footnotesize{
-	\noindent\begin{minipage}{0.5\textwidth}% adapt widths of minipages to your needs
-	\includegraphics[width=\linewidth]{fig/omino-interrogativo.png}
-	\end{minipage}%
-	\hfill%
-	\begin{minipage}{0.5\textwidth}
-	   \begin{itemize}
-	      \item A problem well known by all those who deal with Risk Management is the following: "Here we are given a multi-dimensional (i.e. 
-	      several risk factors) problem for which we have marginal information together with an idea of dependence". 
-		  \item Now the question is: \textbf{When is this problem well-posed?}
-	   \end{itemize}
-	 %  }
-	\end{minipage}
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{The Problem (Embrechts, 2009)}
-   %\footnotesize{
-   \begin{itemize}
-      \item  One concrete question could be this: given two marginal, one-period risk factors $X_1$ ed $X_2$ with lognormal distribution 
-      functions (dfs) 
-       $F_1 = LN(\mu=0, \sigma=1)$ and  $F_1 = LN(\mu=0, \sigma=4)$. How can we simulate from such a model if $X_1$ and $X_2$ 
-       have linear correlation $\rho = 0.5$ say?
-	  \item First of all, the correlation information say something (but what?) about the bivariate df of the random vectors $(X_1, X_2)^T$, 
-	  i.e. about
-	    $F(x_1, x_2) = Prob[x_1 \le X_1, x_2 \le X_2]$;
-	  \item Note however that, in the above, that information is \textbf{not} given; we \textbf{only} know $F_1$, $F_2$ e $\rho$; 
-	  \item What else would one need?
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{The easy Copula argument}
-   %\footnotesize{
-   \begin{itemize}
-	    \item First note that for random variables (rvs) $X_i$ with continuous dfs $F_i$, le variabili $U_i= F_i(X_i) $ are uniformly distributed 
-	    rvs on $[0, 1]$;
-		\item Hence for some joint df $F$ with marginal dfs $F_1$ e $F_2$ we have:
-		\begin{equation}
-			\begin{split}
-			F(X_1, X_2) &= P(X_1 \le x_1, X_2 \le x_2) \\
-			&= P(F_1(X_1) \le F_1(x_1), F_1(X_2) \le F_1(x_2)) \\
-			&= P(U_1 \le F_1(x_1), U_2 \le F_2(x_2)) \\
-			& := C(F_1(x_1), F_2(x_2)) 
-			\end{split}
-		\end{equation}	  
-		\item The function $C$ above is exactly \textit{a} (careful here!) \textbf{copula}, a df on $I^2 = [0, 1] \times [0, 1]$ with standard 
-		uniform marginals, $C$ is the df of the random vector $(U_1, U_2)^T$.  
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{The easy Copula argument}
-   %\footnotesize{
-   \begin{itemize}
-      \item  If we return to our lognormal example, we see no immediate reason how the number $\rho$ should determine the function $C$, 
-      it is not even clear whether the problem has none, one or infinitely many solutions;
-      \item In this case, it turns out that the problem posed has \textbf{no} solution.  				  						  
-      \item The time has come to move on to some definition ... 
-   \end{itemize}
- %  }
-\end{frame}
+
 %===================================================================================================
-\section{Definitions}
+\section{Copulas}
 %___________________________________________________________________________________________________
 %
 \begin{frame}{Copulas}
@@ -252,7 +313,7 @@
 \begin{frame}{Copulas}
 \noindent
 \begin{minipage}{0.5\textwidth}% adapt widths of minipages to your needs
-\includegraphics[width=\linewidth]{fig/Image001.png}
+\includegraphics[width=\linewidth]{fig/copula_definizione_quadrato.png}
 \end{minipage}%
 \hfill%
 \begin{minipage}{0.5\textwidth}
@@ -402,6 +463,9 @@
 	\end{itemize}
 	\end{minipage}
 \end{frame}
+
+
+\subsection{Survival Copula}
 %___________________________________________________________________________________________________
 %
 \begin{frame}{Survival Copula}
@@ -430,9 +494,11 @@
    \end{itemize}
  %  }
 \end{frame}
+
+\subsection{Density}
 %___________________________________________________________________________________________________
 %
-\begin{frame}{Copula and Measure}
+\begin{frame}{Density}
    %\footnotesize{
    \begin{itemize}
       \item   				  						  
@@ -460,7 +526,7 @@
 \end{frame}
 %___________________________________________________________________________________________________
 %
-\begin{frame}{Copula and Measure}
+\begin{frame}{Density}
    %\footnotesize{
    \begin{itemize}
       \item   				  						  
@@ -524,10 +590,322 @@
 \end{frame}
 %___________________________________________________________________________________________________
 %
-%===================================================================================================
-\section{Examples}
+\begin{frame}{Copula and Measure: Example}
+
+\textbf{Exercise} Compute the following expression
+
+\begin{equation}
+\int\limits_0^1 \int\limits_0^1 C(u,v) \frac{\partial^2 C(u,v)}{\partial u \partial v} \>du\>dv
+\end{equation}
+\end{frame}
 %___________________________________________________________________________________________________
 %
+\begin{frame}{Copula and Measure: Example}
+	\footnotesize{
+	\textbf{Answer} Evaluate the inner integral by parts
+	\begin{equation}
+	\begin{split}
+	& \int_{0}^{1}C(u,v)\frac{\partial^2}{\partial u \partial v}C(u,v)\,du\\
+	& = \left.C(u,v)\frac{\partial}{\partial v}C(u,v)\right|_{u=0}
+	^{u=1}-\int_{0}^{1}\frac{\partial}{\partial u}C(u,v)\frac{\partial}{\partial v}C(u,v)\,du\\
+	& =v-\int_{0}^{1}\frac{\partial}{\partial u}
+	C(u,v)\frac{\partial}{\partial v}C(u,v)\,du
+	\end{split}
+	\end{equation}
+	performing the second integral we have
+	\begin{equation}
+	\begin{split}
+	\int_{0}^{1}\int_{0}^{1}C(u,v)\frac{\partial^2}{\partial u \partial v}C(u,v)\,dudv\\=\frac1{2}-\int_{0}^{1}\int_{0}^{1}
+	\frac{\partial}{\partial u}C(u,v)\frac{\partial}{\partial v}C(u,v)\,dudv.
+	\end{split}
+	\end{equation}
+	}
+\end{frame}
+%===================================================================================================
+\section{Dependence Concepts}
+
+\begin{frame}{Dependence Measures}
+   %\footnotesize{
+   \begin{itemize}
+    \item Copulas provide a natural way to study and measure dependence between random 
+    variables. 
+	\item Copula properties are invariant under strictly increasing transformations of the 
+	underlying random variables. 
+	\item Linear correlation (or Pearson’s correlation) is most frequently used in practice 
+	as a measure of dependence. However, since linear correlation is not a copula-based 
+	measure of dependence, it can often be quite misleading and should not be taken as the 
+	canonical dependence measure. In the next slides we recall the basic properties of 
+	linear correlation, and then continue with some copula based measures of dependence.
+   \end{itemize}
+ %  }
+\end{frame}
+\subsection{Linear Correlation Coefficient}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Linear Correlation Coefficient}
+   %\footnotesize{
+		\textbf{Definition}. Let $(X,Y)^T$ be a vector of random variables with nonzero finite variances. The linear correlation coefficient 
+		for $(X,Y)^T$ is
+		\begin{equation}
+			\rho(X,Y) = \frac{Cov(X,Y}{\sqrt{Var(X)}\sqrt{Var(Y)}}
+		\end{equation}	
+		where $Cov(X,Y) = \mathbb{E}(XY) -\mathbb{E}(X)\mathbb{E}(Y)$ is the covariance of $(X,Y)^T$, and $Var(X)$ and
+		$Var(Y)$ are the variances of $X$ and $Y$. %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Linear Correlation Coefficient}
+   %\footnotesize{
+   \begin{itemize}
+      \item  Linear correlation is a popular but also often misunderstood measure of dependence. 
+      \item The popularity of linear correlation stems from the ease with which it can be calculated and it is a natural scalar measure of 
+      dependence in elliptical distributions (with well known members such as the multivariate normal and the multivariate t-
+      distribution). 
+      \item However most random variables are not jointly elliptically distributed, and using linear correlation as a measure of 
+      dependence in such situations might prove very misleading. 
+      \item Even for jointly elliptically distributed random variables there are 
+      situations where using linear correlation does not make sense. We might choose to model some scenario using heavy-tailed 
+      distributions such as t2-distributions. In such cases the linear correlation coefficient is not even defined because of infinite second 
+      moments.
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Linear Correlation Coefficient}
+\noindent\textbf{Property}. $\rho(X,Y)$ is bounded:
+$$
+\rho_l \le \rho \le \rho_u
+$$
+where the bounds $\rho_l$ and $\rho_u$ are defined as
+\footnotesize{
+	\begin{equation}
+	\begin{split}
+	& \rho_l = \frac{\iint_D \Bigl[ C^-(F_1(x), F_2(y)) - F_1(x)F_2(y) \Bigr] \> dx\>dy}
+	                        {\sqrt{
+	                                  \Bigl[ \int_{Dom(F_1)}(x-\mathbb{E}(x))^2dF_1(x) \Bigr]
+	                                  \Bigl[ \int_{Dom(F_2)}(y-\mathbb{E}(y))^2dF_2(y) \Bigr]
+	                                 }
+	                        } \\
+	& \rho_u = \frac{\iint_D \Bigl[ C^+(F_1(x), F_2(y)) - F_1(x)F_2(y) \Bigr] \> dx\>dy}
+	                        {\sqrt{
+	                                  \Bigl[ \int_{Dom(F_1)}(x-\mathbb{E}(x))^2dF_1(x) \Bigr]
+	                                  \Bigl[ \int_{Dom(F_2)}(y-\mathbb{E}(y))^2dF_2(y) \Bigr]
+	                                 }
+	                        } \\
+	\end{split}
+	\end{equation}
+}
+\normalsize
+and are attained respectively when $X$ and $Y$ are countermonotonic and comonotonic.
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Linear Correlation Coefficient}
+ \noindent\textbf{Proof}. The bound for $\rho(X,Y)$ can be obtained directly from Hoeffding's expression for covariance together with the Fréchet inequality. 
+	
+\bigskip	
+%\footnotesize{
+\noindent\textbf{Example}. Let $X \sim LN(0, \sigma_1^2)$ and $Y \sim LN(0, \sigma_2^2)$. Then $\rho_{min} = \rho(e^{\sigma_1Z}, e^{-\sigma_2 Z})$ and $\rho_{max} = \rho(e^{\sigma_1Z}, e^{\sigma_2 Z})$, where $Z \sim N(0,1)$. $\rho_{min}$ and $\rho_{max}$ can be computed yielding:
+
+\begin{equation}
+\begin{split}
+& \rho_l = \frac{exp(-\sigma_1 \sigma_2) - 1}
+                        {
+                         \sqrt{(exp(\sigma_1^2) - 1)}
+                         \sqrt{(exp(\sigma_2^2) - 1)}
+                        } \le 0 \\
+& \rho_u = \frac{exp(\sigma_1 \sigma_2) - 1}
+                        {
+                         \sqrt{(exp(\sigma_1^2) - 1)}
+                         \sqrt{(exp(\sigma_2^2) - 1)}
+                        } \ge 0
+\end{split}
+\end{equation}
+
+ %}
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Linear Correlation Coefficient}
+Note that
+$$
+\lim\limits_{\sigma \rightarrow \infty} \rho_{min} =\lim\limits_{\sigma \rightarrow \infty} \rho_{max}=0  
+$$
+\begin{center}
+\includegraphics[scale=0.5]{fig/linear_correlation_lognormal.png} 
+\end{center}
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\subsection{Concordance}
+
+\begin{frame}{Concordance}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		Concordance concepts, loosely speaking, aim at capturing the fact that the 
+		probability of having "large" (or "small") values of both $X$ and $Y$ is high, while 
+		the probability of having "large" values of $X$ together with "small" values of "Y" 
+		- or viceversa - is low.
+	  \item 
+	  	Let $(x, y)^T$ and $(\tilde x, \tilde y)^T$ be two observations from a vector $(X, Y 
+	  	)^T$ of continuous random variables. 
+	  \item		  	
+	  	Then $(x, y)^T$ and $(\tilde x, \tilde y)^T$ 
+	  	are said to be concordant if $(x - \tilde x)(y - \tilde y) > 0$, and discordant if $
+	  	(x-\tilde x)(y-\tilde y) < 0$.
+	  \item 
+		The following theorem can be found in Nelsen (1999) p. 127. Many of the results in 	
+		this section are direct consequences of this theorem.
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Concordance}
+  %\footnotesize{
+	\begin{thm}
+	Let $(X, Y )^T$ and $(\tilde X, \tilde Y )^T$ be independent vectors of continuous random variables with joint distribution functions $H$ 
+	and $\tilde H$, respectively, with common margins $F$ (of $X$ and $\tilde X$) and $G$ (of $Y$ and $\tilde Y$). Let $C$ and $\tilde C
+	$ denote the copulas of $(X, Y )^T$ and $(\tilde X, \tilde Y )^T$ respectively,so that $H(x,y)=C(F(x),G(y))$ and $\tilde H(x,y)= \tilde 
+	C(F(x),G(y))$. Let $Q$ denote the difference between the probability of concordance and discordance of $(X, Y )^T$ and $(\tilde X, 
+	\tilde Y )^T$,  i.e. let
+	\begin{equation}
+    	Q=\mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0]-\mathbb{P}[(X-\tilde X)(Y-\tilde Y) < 0] 
+	\end{equation}	
+	Then
+	\begin{equation}
+			Q=Q(C, \tilde C) = 4 \iint\limits_{[0,1]^2} \tilde C (u,v) dC(u,v) -1
+	\end{equation}
+    \end{thm}
+ %}
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Concordance}
+\textbf{Proof}. Since the random variables are all continuous,
+\footnotesize
+$$
+\mathbb{P}[(X-\tilde X)(Y-\tilde Y) < 0] = 1 -\mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0] \Rightarrow Q = 2 
+\mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0] - 1
+$$
+\normalsize
+But
+$$
+\mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0] = \mathbb{P}[X > \tilde X, Y > \tilde Y] + \mathbb{P}[X <\tilde X, Y < \tilde Y]
+$$
+and these probabilities can be evaluated by integrating over the distribution of one of the vectors $(X, Y)^T$ or $(\tilde X, \tilde Y)^T$. Hence
+
+\begin{equation}
+\begin{split}
+\mathbb{P}[X > \tilde X, Y > \tilde Y] & = \mathbb{P}[ \tilde X < X, \tilde Y < Y] \\
+& = \iint\limits_{\mathbb{R}^2} \mathbb{P}[ \tilde X < x, \tilde Y < y] \> dC[F(x), G(y)] \\
+& = \iint\limits_{\mathbb{R}^2} \tilde C [F(x), G(y)]  \> dC[F(x), G(y)]
+\end{split}
+\end{equation}
+
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Concordance}
+Employing the probability-integral transform $u=F(x)$ and $v = G(y)$ then yields
+
+\begin{equation}
+\mathbb{P}[X > \tilde X, Y > \tilde Y] = \mathbb{P}[ \tilde X < X, \tilde Y < Y] 
+= \iint\limits_{[0, 1]^2} \tilde C(u, v)  \> dC(u, v)
+\end{equation}
+Similarly,
+\footnotesize
+\begin{equation}
+\begin{split}
+\mathbb{P}[X < \tilde X, Y < \tilde Y] & = \iint\limits_{\mathbb{R}^2} \mathbb{P}[ \tilde X > x, \tilde Y > y] \> dC[F(x), G(y)] \\
+& = \iint\limits_{\mathbb{R}^2} \bigl\{1 - F(x) - G(y) + \tilde C[F(x), G(y)]    \bigr\}  \> dC[F(x), G(y)] \\
+& = \iint\limits_{[0, 1]^2} \bigl\{1 - u - v + \tilde C(u, v)   \bigr\}  \> dC(u, v)
+\end{split}
+\end{equation}
+\normalsize
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Concordance}
+\footnotesize{
+		But since $C$ is the joint distribution function of a vector $(U, V)^T$ of $U(0, 1)$ random variables, $\mathbb{E}(U) = 
+		\mathbb{E}(V) = 1/2$, and hence
+		
+		\begin{equation}
+		\mathbb{P}[X < \tilde X, Y < \tilde Y] = 1 - \frac{1}{2} - \frac{1}{2} + \iint\limits_{[0, 1]^2} \tilde C(u, v) \> dC(u, v) =
+		\iint\limits_{[0, 1]^2} \tilde C(u, v) \> dC(u, v)
+		\end{equation}
+		Thus
+		
+		\begin{equation}
+		\mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0] = 2 \iint\limits_{[0, 1]^2} \tilde C(u, v) \> dC(u, v)
+		\end{equation}
+		and the conclusion follows
+		
+		\begin{equation}
+		Q = 2 \mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0] - 1 = 4 \iint\limits_{[0, 1]^2} \tilde C(u, v) \> dC(u, v) - 1
+		\end{equation}
+}
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\subsection{Kendall's tau and Spearman's rho}
+\begin{frame}{Kendall's tau and Spearman's rho}
+
+		\textbf{Definition}. Kendall's tau for the random vector $(X, Y)^T$ is defined as
+		\begin{equation}
+		\tau (X, Y) =\mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0]-\mathbb{P}[(X-\tilde X)(Y-\tilde Y) < 0] 
+		\end{equation}
+		where $(\tilde X, \tilde Y)^T$ is an independent copy of $(X, Y)^T$.
+		Hence Kendall's tau for $(X, Y)^T$ is simply the probability of concordance minus the probability of discordance and since the 
+		copula of  $(\tilde X, \tilde Y)^T$ is the same of $(X, Y)^T$ is also simply equal to $Q(C, C)$:
+		
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Kendall's tau and Spearman's rho}
+
+		\noindent\textbf{Theorem}. Let $(X, Y)^T$ be a vector of continuous random variables with copula $C$. Then Kendall's tau for 
+		$(X, Y)^T$ is given by 
+		
+		\begin{equation}
+		\tau (X,Y) = Q(C, C) = 4 \iint\limits_{[0, 1]^2} C(u, v) \> dC(u, v) - 1
+		\end{equation}
+		
+		\noindent Note that the integral above is the expected value of the random variable $C(U, V)$, where $U, V \sim U(0, 1)$ with 
+		joint distribution function $C$, i.e. $\tau = 4 \mathbb{E}(C(U,V)) - 1$.
+
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Kendall's tau and Spearman's rho}
+\footnotesize{
+\begin{itemize}
+	\item
+		\textbf{Definition}.  Spearman's rho for the random vector  $(X, Y)^T$ is defined as
+		\begin{equation}
+		\rho_S (X, Y) =3 (\mathbb{P}[(X-\tilde X)(Y-Y^\prime) > 0]-\mathbb{P}[(X-\tilde X)(Y-Y^\prime ) < 0]) 
+		\end{equation}
+		where $(X, Y)^T$, $(\tilde X, \tilde Y)^T$ and $(X^\prime, Y^\prime)^T$ are \textbf{independent} copies.
+	\item
+		\noindent\textbf{Theorem}.  Let $(X, Y)^T$ be a vector of continuous random variables with copula $C$. Then Spearman's rho 
+		for $(X, Y)^T$ is given by (note that $\tilde X$ and $Y^\prime$ are independent so their copula is the product copula)
+		\begin{equation}
+		\begin{split}
+		\rho_S (X, Y) & = 3Q(C, \Pi) = 12 \iint\limits_{[0, 1]^2} uv \> dC(u, v) - 3 = 12 \iint\limits_{[0, 1]^2} C(u,v) \>du\>dv - 3 \\
+		& = \frac{\mathbb{E}(UV) - 1/4}{1/12} = \frac{Cov(U, V)}{\sqrt{Var(U)}\sqrt{Var(V)}} \\
+		& = \rho[F(X), G(Y)]
+		\end{split}
+		\end{equation}
+\end{itemize}
+}
+\end{frame}
+%===================================================================================================
+\section{Copula Families}
+
+\subsection{Gaussian copulas}
 \begin{frame}{Elliptical Copulas}
    %\footnotesize{
    \begin{itemize}
@@ -665,6 +1043,8 @@
         \end{minipage}
     \end{figure}
 \end{frame}
+
+\subsection{t-copulas}
 %___________________________________________________________________________________________________
 %
 \begin{frame}{t copula}
@@ -710,141 +1090,196 @@
    \end{itemize}
  %  }
 \end{frame}
+
+\subsection{Archimedean copulas}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item In this section we discuss an important class of copulas called Archimedean copulas. 
+      \item They have proved to be useful in several applications since they are capable of capturing wide ranges of dependence 
+      structures. 
+      \item Furthermore, in contrast to elliptical copulas, all commonly encountered Archimedean copulas have closed form expressions.
+      \item We divide the discussion of Archimedean copulas in three subsections: the first introduces them and their main properties, 
+      the second discusses dependence, the third presents different one-parameter families of Archimedean copulas.
+\end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+\begin{itemize}
+\item
+Archimedean copulas may be constructed using a function $\phi : \mathbb{I} \rightarrow [0, \infty]$, 
+continuous, decreasing, convex and such that $\phi(1) = 0$. 
+\item
+Such a function $\phi$ is called a generator. It is called a strict generator whenever $\phi(0) = +\infty$. 
+\item
+The pseudo-inverse of $\phi$ is defined as follows:
+\end{itemize}
+\begin{center}
+
+\end{center}
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+\subsection{Marshall-Olkin coulas}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Titolo}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
 %===================================================================================================
-\section{Dependence Concepts}
+\section{Tail Dependence}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Titolo}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+
+
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Kendall's tau and Spearman's rho}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Kendall's tau and Spearman's rho}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Titolo}
+   %\footnotesize{
+   \begin{itemize}
+      \item   				  						  
+		item 1 
+	  \item item 2
+\item item 3
+   \end{itemize}
+ %  }
+\end{frame}
+
+
+
+%___________________________________________________________________________________________________
+%
+
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %\subsection[Definizioni]{Definizioni}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Dependence Measures}
-   %\footnotesize{
-   \begin{itemize}
-    \item Copulas provide a natural way to study and measure dependence between random 
-    variables. 
-	\item Copula properties are invariant under strictly increasing transformations of the 
-	underlying random variables. 
-	\item Linear correlation (or Pearson’s correlation) is most frequently used in practice 
-	as a measure of dependence. However, since linear correlation is not a copula-based 
-	measure of dependence, it can often be quite misleading and should not be taken as the 
-	canonical dependence measure. In the next slides we recall the basic properties of 
-	linear correlation, and then continue with some copula based measures of dependence.
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Concordance}
-   %\footnotesize{
-   \begin{itemize}
-      \item   				  						  
-		Concordance concepts, loosely speaking, aim at capturing the fact that the 
-		probability of having "large" (or "small") values of both $X$ and $Y$ is high, while 
-		the probability of having "large" values of $X$ together with "small" values of "Y" 
-		- or viceversa - is low.
-	  \item 
-	  	Let $(x, y)^T$ and $(\tilde x, \tilde y)^T$ be two observations from a vector $(X, Y 
-	  	)^T$ of continuous random variables. 
-	  \item		  	
-	  	Then $(x, y)^T$ and $(\tilde x, \tilde y)^T$ 
-	  	are said to be concordant if $(x - \tilde x)(y - \tilde y) > 0$, and discordant if $
-	  	(x-\tilde x)(y-\tilde y) < 0$.
-	  \item 
-		The following theorem can be found in Nelsen (1999) p. 127. Many of the results in 	
-		this section are direct consequences of this theorem.
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Concordance}
-  %\footnotesize{
-	\begin{thm}
-	Let $(X, Y )^T$ and $(\tilde X, \tilde Y )^T$ be independent vectors of continuous random variables with joint distribution functions $H$ 
-	and $\tilde H$, respectively, with common margins $F$ (of $X$ and $\tilde X$) and $G$ (of $Y$ and $\tilde Y$). Let $C$ and $\tilde C
-	$ denote the copulas of $(X, Y )^T$ and $(\tilde X, \tilde Y )^T$ respectively,so that $H(x,y)=C(F(x),G(y))$ and $\tilde H(x,y)= \tilde 
-	C(F(x),G(y))$. Let $Q$ denote the difference between the probability of concordance and discordance of $(X, Y )^T$ and $(\tilde X, 
-	\tilde Y )^T$,  i.e. let
-	\begin{equation}
-    	Q=\mathbb{P}[(X-\tilde X)(Y-\tilde Y) > 0]-\mathbb{P}[(X-\tilde X)(Y-\tilde Y) < 0] 
-	\end{equation}	
-	Then
-	\begin{equation}
-			Q=Q(C, \tilde C) = 4 \iint\limits_{[0,1]^2} \tilde C (u,v) dC(u,v) -1
-	\end{equation}
-    \end{thm}
- %}
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Titolo}
-   %\footnotesize{
-   \begin{itemize}
-      \item   				  						  
-		item 1 
-	  \item item 2
-\item item 3
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Titolo}
-   %\footnotesize{
-   \begin{itemize}
-      \item   				  						  
-		item 1 
-	  \item item 2
-\item item 3
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Titolo}
-   %\footnotesize{
-   \begin{itemize}
-      \item   				  						  
-		item 1 
-	  \item item 2
-\item item 3
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Titolo}
-   %\footnotesize{
-   \begin{itemize}
-      \item   				  						  
-		item 1 
-	  \item item 2
-\item item 3
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Titolo}
-   %\footnotesize{
-   \begin{itemize}
-      \item   				  						  
-		item 1 
-	  \item item 2
-\item item 3
-   \end{itemize}
- %  }
-\end{frame}
-%___________________________________________________________________________________________________
-%
-\begin{frame}{Titolo}
-   %\footnotesize{
-   \begin{itemize}
-      \item   				  						  
-		item 1 
-	  \item item 2
-\item item 3
-   \end{itemize}
- %  }
-\end{frame}
 
 \end{document}
