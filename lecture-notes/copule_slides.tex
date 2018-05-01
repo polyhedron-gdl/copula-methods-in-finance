@@ -73,7 +73,7 @@
       	\item  Many real-life situations can be modelled by a large number of random variables which play a significant role, and such 
       	variates are generally not independent. 
 		\item Therefore, it is often of fundamental importance to be able to link the marginal distributions of different variables in order 
-		to give a flexible and accurate descrip- tion of the joint law of the variables of interest. 	
+		to give a flexible and accurate description of the joint law of the variables of interest. 	
 		\item Copulas were introduced in 1959 in the context of probabilistic metric spaces and later exploited as a tool for 
 		understanding relationships among multivariate outcomes. 
 		\item A copula is a function that links univariate marginals to their joint multivariate distribution in such a way that it captures 
@@ -90,7 +90,7 @@
 		for the dependence between variables X and Y , represented by the copula, can proceed independently from the choice of the 
 		marginal distributions. 
 		\item The seminal result in the history of copulas is due to Sklar that introduced in 1959 the notion, and the name, of copula, 
-		and proved the theo- rem that now bears his name (Sklar, 1959). 
+		and proved the theorem that now bears his name (Sklar, 1959). 
 		\item The latter states that any multivariate distribution can be expressed as its copula function evaluated at its marginal 
 		distribution functions. 
 		\item Moreover, any copula function when evaluated at any marginal distributions is a multivariate distribution.
@@ -151,7 +151,7 @@
 \begin{frame}{The easy Copula argument}
    %\footnotesize{
    \begin{itemize}
-	    \item First note that for random variables (rvs) $X_i$ with continuous dfs $F_i$, le variabili $U_i= F_i(X_i) $ are uniformly distributed 
+	    \item First note that for random variables (rvs) $X_i$ with continuous dfs $F_i$, variables $U_i= F_i(X_i) $ are uniformly distributed 
 	    rvs on $[0, 1]$;
 		\item Hence for some joint df $F$ with marginal dfs $F_1$ e $F_2$ we have:
 		\begin{equation}
@@ -575,9 +575,9 @@
 	= \int\limits_0^1 du \> u \int\limits_0^1 dv \> v \frac{\partial^2 C(u, v)}{\partial u 
 	\partial v} \\
 	& = \int\limits_0^1 du \> u \Biggl( \Bigl[ v \frac{\partial C(u, v)}{\partial u} 
-	\Bigr]_{v=0}^{v=1} - \int\limits_0^1 \frac{\partial C(u, v)}{\partial u} \Biggr) 
+	\Bigr]_{v=0}^{v=1} - \int\limits_0^1 \frac{\partial C(u, v)}{\partial u} \,dv \Biggr) 
 	= \int\limits_0^1 du \> u \Biggl( 1 - \int\limits_0^1 \frac{\partial C(u, v)}{\partial 
-	u} \Biggr) \\
+	u} \, dv \Biggr) \\
 	& = \int\limits_0^1 du \> u - \int\limits_0^1 \> dv \int\limits_0^1  \> du \> u 
 	\frac{\partial C(u, v)}{\partial u} 
 	= \int\limits_0^1 du \> u - \int\limits_0^1 \> dv \Bigl(\Bigl[ u C(u, v) \Bigr]_{u=0}
@@ -647,7 +647,7 @@
 		\textbf{Definition}. Let $(X,Y)^T$ be a vector of random variables with nonzero finite variances. The linear correlation coefficient 
 		for $(X,Y)^T$ is
 		\begin{equation}
-			\rho(X,Y) = \frac{Cov(X,Y}{\sqrt{Var(X)}\sqrt{Var(Y)}}
+			\rho(X,Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}}
 		\end{equation}	
 		where $Cov(X,Y) = \mathbb{E}(XY) -\mathbb{E}(X)\mathbb{E}(Y)$ is the covariance of $(X,Y)^T$, and $Var(X)$ and
 		$Var(Y)$ are the variances of $X$ and $Y$. %  }
