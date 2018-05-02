@@ -1101,6 +1101,12 @@ Similarly,
    \end{itemize}
  %  }
 \end{frame}
+%...................................................................................................
+\begin{frame}{Coding Interlude - Elliptical Copulas ...}
+\begin{center}
+\includegraphics[scale=.8]{fig/exercise.jpg} 
+\end{center}
+\end{frame}
 
 \subsection{Archimedean copulas}
 %___________________________________________________________________________________________________
@@ -1136,18 +1142,27 @@ The pseudo-inverse of $\phi$ is defined as follows:
 %___________________________________________________________________________________________________
 %
 \begin{frame}{Archimedean copulas}
-
-
-The pseudo-inverse is such that, by composition with the generator, it gives the identity, and it coincides with the usual      
-	inverse if $\phi$ is a strict generator. \\[2ex]
-
-\noindent\textbf{Definition} Given a generator and its pseudo-inverse, an Archimedean 2-copula takes the form
-\begin{equation}
-C(u, v) = \phi^{[-1]}\Bigl( \phi(u) + \phi(v) \Bigr)
-\end{equation}
-
-If the generator is strict, the copula is said to be a strict Archimedean 2-copula.				  						  
-
+	The pseudo-inverse is such that, by composition with the generator, it gives the identity, and it coincides 
+	with the usual inverse if $\phi$ is a strict generator. \\[2ex]
+	
+	\noindent\textbf{Definition} Given a generator and its pseudo-inverse, an Archimedean 2-copula takes the 
+	form
+	\begin{equation}
+	C(u, v) = \phi^{[-1]}\Bigl( \phi(u) + \phi(v) \Bigr)
+	\end{equation}
+	
+	If the generator is strict, the copula is said to be a strict Archimedean 2-copula.				  						  
+\end{frame}
+%___________________________________________________________________________________________________
+%
+\begin{frame}{Archimedean copulas}
+	\begin{itemize}
+		\item Among Archimedean copulas, we are going to consider in particular the one-parameter ones, which 
+		are constructed using a generator $\phi_\alpha(t)$, indexed by a real parameter $\alpha$;
+		\item By choosing the generator, one obtains a subclass or family of Archimedean copulas;
+		\item The following table describes some well-known families and their generator (for a more exhaustive 
+		list see Nelsen , 1999)
+	\end{itemize}
 \end{frame}
 %___________________________________________________________________________________________________
 %
@@ -1217,6 +1232,12 @@ If the generator is strict, the copula is said to be a strict Archimedean 2-copu
 	\begin{center}
 	\includegraphics[scale=.5]{fig/copule_archimedee_frank_plot.PNG} 	
 	\end{center}
+\end{frame}
+%...................................................................................................
+\begin{frame}{Coding Interlude - R Gumbel Package ...}
+\begin{center}
+\includegraphics[scale=.8]{fig/exercise.jpg} 
+\end{center}
 \end{frame}
 %===================================================================================================
 \section{Tail Dependence}
@@ -1391,7 +1412,7 @@ This can be used to show that the t-copula has upper (and because of radial symm
 \end{frame}
 %===================================================================================================
 \section{Bibliography}
-
+\footnotesize
 \begin{frame}{Bibliography}
 \begin{thebibliography}{9}
 \setbeamertemplate{bibliography item}[book]
@@ -1401,6 +1422,9 @@ This can be used to show that the t-copula has upper (and because of radial symm
 \bibitem{C} Embrechts et al. "Modelling Dependence with Copulas and Application to Risk Management", Department of Mathematik, ETHZ, Zurich, working paper
 \bibitem{C} Embrechts et al. "Correlation and Dependency in Risk Management: Properties and Pitfalls", Department of Mathematik, ETHZ, Zurich, working paper
 \bibitem{C} Lindskog "Linear Correlation Estimation", RiskLab ETH, working paper
+\setbeamertemplate{bibliography item}[book]
+\bibitem{C} Nelsen "An Introduction to Copulas", \textit{Lecture Notes in Statistics}, Springer-Verlag, 1999
+\setbeamertemplate{bibliography item}[article]
 \bibitem{C} Scarsini "On Measures of Concordance",  \textit{Stochastica}, \textbf{8}, 201-208
 %\setbeamertemplate{bibliography item}[triangle]
 %\bibitem{D} ItemD
